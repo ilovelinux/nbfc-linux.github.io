@@ -1,0 +1,32 @@
+name: update-data
+run-name: Update generated files
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  update-data:
+    runs-on: ubuntu-slim
+    steps:
+      - id: checkout
+        uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          cache: 'pip'
+      - run: python -m pip install requests
+      - run: |
+          python generate.py
+          python creating-config/generate.py
+      - run: git diff --exit-code
+        continue-on-error: true
+      - if: ${{ !success() }}
+        name: Create Pull Request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          title: "Update generated files"
+          body: "An update to the generated files has been made!"
+          commit-message: "Update generated files"
+          # reviewers: "braph"
