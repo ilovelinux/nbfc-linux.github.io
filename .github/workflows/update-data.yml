@@ -13,11 +13,6 @@ jobs:
       # Setup the repository and Python environment
       - name: Checkout repository
         uses: actions/checkout@v7
-      - name: Set up Python
-        uses: actions/setup-python@v7
-        with:
-          python-version: '3.x'
-          cache: 'pip'
       - name: Install dependencies
         run: pip install requests
 
