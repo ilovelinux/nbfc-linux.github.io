@@ -1,5 +1,4 @@
-name: update-data
-run-name: Update generated files
+name: Update generated files
 on:
   schedule:
     - cron: '0 0 * * *'
